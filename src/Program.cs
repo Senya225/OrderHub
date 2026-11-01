@@ -1,4 +1,4 @@
-﻿using OrderHub.Domain;
+using OrderHub.Domain;
 using OrderHub.Services;
 
 var reports = new ReportService();
