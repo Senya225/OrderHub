@@ -1,14 +1,12 @@
-﻿using OrderHub.Services;
+﻿using OrderHub.Domain;
+using OrderHub.Services;
 
-var service = new OrderService();
+var reports = new ReportService();
+var customers = new[] { new Customer(1, "Иванов", "Москва"), new Customer(2, "Петрова", "СПб") };
+var orders = new[] { 
+    new Order(1, "Иванов", "Клавиатура", 5490m, DateTime.Now), 
+    new Order(2, "Петрова", "Монитор", 18990m, DateTime.Now), 
+    new Order(3, "Иванов", "Мышь", 1290m, DateTime.Now) 
+};
 
-service.InitHistory(
-    service.CreateOrder("Иванов", "Клавиатура", 5490m),
-    service.CreateOrder("Петрова", "Монитор", 18990m)
-);
-
-service.PlaceOrderAfterCurrent(service.CreateOrder("Сидоров", "Мышь", 1290m));
-service.PrintHistory();
-
-Console.WriteLine(service.TryFindOrder("Иванов", out var found) ? $"Найден: {found}" : "Не найден");
-Console.WriteLine(service.TryFindOrder("Нет такого", out _) ? "Найден" : "Не найден");
+foreach (var c in reports.TopCustomers(customers, orders, 3)) Console.WriteLine(c);
