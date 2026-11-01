@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using OrderHub.Domain;
 
 namespace OrderHub.Services;
@@ -31,4 +31,9 @@ public class ReportService
         => products.GroupBy(p => p.Category)
             .Select(g => new CategorySummary { Category = g.Key, Count = g.Count(), AveragePrice = g.Average(p => p.Price) })
             .OrderByDescending(s => s.Count).ToList();
+
+    public List<string> TopCustomers(IEnumerable<Customer> customers, IEnumerable<Order> orders, int topCount)
+        => customers.Join(orders, c => c.Name, o => o.CustomerName, (c, o) => new { c.Name, o.Price })
+            .GroupBy(x => x.Name).Select(g => new { Name = g.Key, Total = g.Sum(x => x.Price) })
+            .OrderByDescending(x => x.Total).Take(topCount).Select(x => $"{x.Name} - {x.Total:0.00} ₽").ToList();
 }

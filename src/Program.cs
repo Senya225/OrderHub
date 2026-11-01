@@ -1,12 +1,14 @@
-﻿using OrderHub.Domain;
-using OrderHub.Services;
+using OrderHub.Collections;
 
-var reports = new ReportService();
-var prods = new[] { 
-    new Product("Клавиатура", 5490m, "Периферия"), 
-    new Product("Мышь", 1290m, "Периферия"), 
-    new Product("Монитор", 18990m, "Дисплеи") 
-};
+var buffer = new CircularBuffer<string>(3);
+buffer.Add("1"); buffer.Add("2"); buffer.Add("3"); buffer.Add("4"); buffer.Add("5");
 
-foreach (var row in reports.SummarizeByCategory(prods))
-    Console.WriteLine($"{row.Category}: {row.Count} шт., средняя {row.AveragePrice:0.00} ₽");
+Console.Write("foreach: "); 
+foreach (var x in buffer) Console.Write(x + " "); 
+Console.WriteLine();
+
+Console.Write("Reverse: "); 
+foreach (var x in buffer.Reverse()) Console.Write(x + " "); 
+Console.WriteLine();
+
+Console.WriteLine($"Count={buffer.Count}, IsFull={buffer.IsFull}");
