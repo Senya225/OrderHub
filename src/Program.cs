@@ -1,14 +1,12 @@
-﻿using OrderHub.Services;
+﻿using OrderHub.Domain;
+using OrderHub.Services;
 
-var service = new OrderService();
+var reports = new ReportService();
+var prods = new[] { 
+    new Product("Клавиатура", 5490m, "Периферия"), 
+    new Product("Мышь", 1290m, "Периферия"), 
+    new Product("Монитор", 18990m, "Дисплеи") 
+};
 
-service.InitHistory(
-    service.CreateOrder("Иванов", "Клавиатура", 5490m),
-    service.CreateOrder("Петрова", "Монитор", 18990m)
-);
-
-service.PlaceOrderAfterCurrent(service.CreateOrder("Сидоров", "Мышь", 1290m));
-service.PrintHistory();
-
-Console.WriteLine(service.TryFindOrder("Иванов", out var found) ? $"Найден: {found}" : "Не найден");
-Console.WriteLine(service.TryFindOrder("Нет такого", out _) ? "Найден" : "Не найден");
+foreach (var row in reports.SummarizeByCategory(prods))
+    Console.WriteLine($"{row.Category}: {row.Count} шт., средняя {row.AveragePrice:0.00} ₽");
