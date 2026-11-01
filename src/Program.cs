@@ -1,14 +1,14 @@
-﻿using OrderHub.Services;
+﻿using OrderHub.Collections;
 
-var service = new OrderService();
+var buffer = new CircularBuffer<string>(3);
+buffer.Add("1"); buffer.Add("2"); buffer.Add("3"); buffer.Add("4"); buffer.Add("5");
 
-service.InitHistory(
-    service.CreateOrder("Иванов", "Клавиатура", 5490m),
-    service.CreateOrder("Петрова", "Монитор", 18990m)
-);
+Console.Write("foreach: "); 
+foreach (var x in buffer) Console.Write(x + " "); 
+Console.WriteLine();
 
-service.PlaceOrderAfterCurrent(service.CreateOrder("Сидоров", "Мышь", 1290m));
-service.PrintHistory();
+Console.Write("Reverse: "); 
+foreach (var x in buffer.Reverse()) Console.Write(x + " "); 
+Console.WriteLine();
 
-Console.WriteLine(service.TryFindOrder("Иванов", out var found) ? $"Найден: {found}" : "Не найден");
-Console.WriteLine(service.TryFindOrder("Нет такого", out _) ? "Найден" : "Не найден");
+Console.WriteLine($"Count={buffer.Count}, IsFull={buffer.IsFull}");
