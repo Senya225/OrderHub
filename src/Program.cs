@@ -2,6 +2,11 @@ using OrderHub.Domain;
 using OrderHub.Services;
 
 
+var ordersStream = OrderStream.Orders();
+Console.WriteLine("После вызова метода (ничего ещё не сгенерировано)");
+foreach (var o in ordersStream.Take(5)) Console.WriteLine(o);
+
+
 var warehouse = new WarehouseService();
 warehouse.Receive("Клавиатура", 10);
 warehouse.Receive("Клавиатура", 5);
@@ -27,5 +32,6 @@ foreach (var line in reports.ExpensiveProducts(prods, 5000m)) Console.WriteLine(
 Console.WriteLine(reports.CountExpensive(prods, 5000m));
 Console.WriteLine(reports.HasVeryExpensive(prods, 50000m));
 Console.WriteLine(reports.Cheapest(prods));
+
 
 
